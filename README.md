@@ -1,61 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏡 Aplikasi SID (Sistem Informasi Desa) – UKK 2526
+
+> **Progress Terakhir:** Setup awal
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+<img src="https://img.shields.io/badge/Laravel-12.x-red" alt="Laravel Version">
+<img src="https://img.shields.io/badge/Status-Development-orange" alt="Status">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 Tentang Proyek
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplikasi **SID (Sistem Informasi Desa)** adalah aplikasi web yang membantu pemerintah desa mengelola data kependudukan, pelayanan surat, publikasi informasi pembangunan, dan pembuatan laporan secara digital.
 
-## Learning Laravel
+### 🎯 Tujuan Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **Efisiensi:** Mempercepat proses administrasi desa (mengurangi kertas).
+-   **Transparansi:** Masyarakat bisa mengakses informasi desa.
+-   **Kemudahan Akses:** Warga bisa mengajukan surat & cek informasi secara online.
+-   **Data Terintegrasi:** Data desa dapat dipakai untuk laporan dan perencanaan.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 👥 Pengguna Utama
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Operator Desa / Admin** — memasukkan & memverifikasi data.
+-   **Kepala Desa** — melihat laporan & tanda tangan surat.
+-   **Masyarakat** — mengajukan permohonan surat dan melihat info desa.
+-   **Pemerintah Kabupaten/Provinsi** — menerima data terintegrasi (opsional).
 
-## Laravel Sponsors
+### 🕒 Waktu Penggunaan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   Digunakan **sehari-hari** untuk update data & pelayanan.
+-   Saat penyusunan **laporan bulanan/tahunan** (APBDes, realisasi).
+-   Saat warga butuh **surat keterangan** atau informasi.
 
-### Premium Partners
+### 🔑 Fitur Utama
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+-   Manajemen data penduduk (KK, KTP, kelahiran, kematian).
+-   Layanan permohonan & cetak surat (PDF).
+-   Publikasi informasi pembangunan dan APBDes.
+-   Dashboard statistik sederhana.
+-   **(Opsional)** Sinkron / integrasi API ke sistem kabupaten/provinsi.
+-   **Progress:** Setup awal.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🔄 Alur & Integrasi (singkat)
 
-## Code of Conduct
+1. Operator input → validasi → simpan ke DB.
+2. Data valid → bisa dipublikasikan di portal / dipakai cetak surat.
+3. Untuk integrasi, buat endpoint API sederhana (contoh: `POST /api/sync/kependudukan`) untuk sinkron ke server kabupaten — atau gunakan **mock API** saat latihan UKK.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Contoh endpoint simulasi untuk latihan:
 
-## Security Vulnerabilities
+-   `GET  /api/desa/info` — ambil ringkasan data desa
+-   `POST /api/desa/kependudukan` — kirim data penduduk ke pusat (sinkron)
+-   `GET  /api/desa/laporan/apbdes` — ambil laporan ringkas
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🔄 Cara Clone Branch Ini
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Gunakan perintah berikut untuk clone hanya branch ini saja:
+
+```bash
+git clone --branch aplikasi_sid --single-branch https://github.com/riskiputraalamzah/ukk2526.git aplikasi_sid
+```
+
+Lalu masuk ke folder project:
+
+```bash
+cd aplikasi_sid
+```
+
+---
+
+## 🚀 Cara Menjalankan Aplikasi
+
+Pastikan environment Laravel sudah siap (PHP, Composer, dan database server). Lalu jalankan:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+Aplikasi akan berjalan di: `http://127.0.0.1:8000`
+
+---
+
+## 💡 Rekomendasi untuk kalian yang kedapetan UKK SID
+
+Buat mock API untuk latihan sinkronisasi (cukup endpoint sederhana).
+
+Tampilkan dashboard: grafik jumlah penduduk, grafik anggaran APBDes (pakai Chart.js atau library sederhana).
+
+Modul cetak surat: gunakan library PDF (dompdf atau laravel-dompdf) agar bisa langsung generate PDF.
+
+## 💬 Penutup
+
+Semangat untuk teman-teman kelas 12 RPL yang sedang mengerjakan **UKK 2526**! 💪
+Kerjakan dengan teliti, update bagian _Progress Terakhir_ di README ini setiap ada fitur baru, dan jaga kerapihan kode agar mudah dipresentasikan dan dinilai dengan baik. 🚀
