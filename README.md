@@ -68,7 +68,7 @@ Contoh endpoint simulasi untuk latihan:
 Gunakan perintah berikut untuk clone hanya branch ini saja:
 
 ```bash
-git clone --branch aplikasi_sid --single-branch https://github.com/riskiputraalamzah/ukk2526.git aplikasi_sid
+git clone --branch aplikasi_sid --single-branch https://github.com/riskiputraalamzah/ukk_2526.git aplikasi_sid
 ```
 
 Lalu masuk ke folder project:
