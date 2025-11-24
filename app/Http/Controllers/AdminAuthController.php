@@ -7,34 +7,43 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
+    /**
+     * --------------------------
+     * TAMPIL FORM LOGIN ADMIN
+     * --------------------------
+     */
     public function loginForm()
     {
-        return view('auth.admin_login');
+        return view('auth.login-admin');
     }
 
+    /**
+     * --------------------------
+     * PROSES LOGIN ADMIN
+     * --------------------------
+     */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required'
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'password.required' => 'Password wajib diisi.'
         ]);
 
-        if (Auth::guard('admin')->attempt($credentials)) {
+        $credentials = $request->only('email', 'password');
+
+        // Hanya role admin yang boleh login di controller ini
+        if (Auth::attempt(array_merge($credentials, ['role' => 'admin']))) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Login admin berhasil!');
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password admin salah.',
-        ])->onlyInput('email');
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::guard('admin')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login.admin');
+            'email' => 'Email atau password salah, atau Anda tidak memiliki akses admin.'
+        ])->withInput();
     }
 }

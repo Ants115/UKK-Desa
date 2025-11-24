@@ -106,37 +106,55 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="{{ route('home') }}" class="nav-link">Beranda</a></li>
 
-                {{-- Dropdown Layanan Publik --}}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Layanan Publik</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Manajemen Data Penduduk</a></li>
-                        <li><a class="dropdown-item" href="#">Pelayanan Surat-Menyurat Digital</a></li>
-                        <li><a class="dropdown-item" href="#">Dashboard Kepala Desa</a></li>
-                        <li><a class="dropdown-item" href="#">Aplikasi Mobile Warga</a></li>
-                        <li><a class="dropdown-item" href="#">Integrasi Dukcapil & BPS</a></li>
-                        <li><a class="dropdown-item" href="#">Notifikasi & Pengingat Otomatis</a></li>
-                        <li><a class="dropdown-item" href="#">Manajemen Inventaris Aset Desa</a></li>
-                        <li><a class="dropdown-item" href="#">Layanan Pengaduan Masyarakat</a></li>
-                        <li><a class="dropdown-item" href="#">Manajemen Kegiatan & Program Desa</a></li>
-                    </ul>
-                </li>
+               {{-- Dropdown Layanan Publik --}}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Layanan Publik</a>
+    <ul class="dropdown-menu">
+
+        @auth
+            {{-- User sudah login --}}
+            <li>
+                <a class="dropdown-item" 
+                   href="{{ auth()->user()->role == 'warga' ? route('layanan.surat') : route('admin.surat') }}">
+                   Pelayanan Surat-Menyurat Digital
+                </a>
+            </li>
+        @else
+            {{-- Pengunjung belum login --}}
+            <li>
+                <a class="dropdown-item" href="{{ route('login') }}">
+                    Pelayanan Surat-Menyurat Digital
+                </a>
+            </li>
+        @endauth
+
+      <li>
+    <a class="dropdown-item" href="{{ route('layanan.inventaris') }}">
+        Manajemen Inventaris Aset Desa
+    </a>
+</li>
+
+        <li><a class="dropdown-item" href="#">Layanan Pengaduan Masyarakat</a></li>
+        <li><a class="dropdown-item" href="#">Manajemen Kegiatan & Program Desa</a></li>
+    </ul>
+</li>
+
 
                 @auth
                 <li class="nav-item">
-        <a  class="nav-link" href="{{ route('dashboard') }}" style="color: white; margin-right: 15px; text-decoration: none;">Dashboard</a>
+        <a  class="nav-link" href="{{ auth()->user()->role == 'admin' ? route('admin.dashboard') : route('dashboard') }}" style="color: white; margin-right: 15px; text-decoration: none;">Dashboard</a>
     </li>
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit" style="background-color: #2e7d32; color: white; border: none; padding: 8px 15px; border-radius: 30px; font-weight: 600;">Logout</button>
+            <button type="submit" style="background-color: #d31414; color: white; border: none; padding: 8px 15px; border-radius: 30px; font-weight: 600;">Logout</button>
         </form>
     @else
         <a href="{{ route('login') }}" 
-           style="background-color: #2e7d32; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-right: 10px;">
+           style="background-color: #1a91e0ff; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-right: 10px;">
            Login
         </a>
         <a href="{{ route('register') }}" 
-           style="background-color: #388e3c; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600;">
+           style="background-color: #1a91e0ff; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600;">
            Register
         </a>
     @endauth

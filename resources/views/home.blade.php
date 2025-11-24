@@ -20,12 +20,7 @@
             </button>
             <ul
                 class="absolute hidden group-hover:block bg-white text-gray-700 mt-2 py-2 rounded-lg shadow-lg w-80 z-50">
-                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">🧍‍♂️ Manajemen Data Penduduk</a></li>
                 <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">📄 Pelayanan Surat-Menyurat Digital</a></li>
-                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">📊 Dashboard Kepala Desa</a></li>
-                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">📱 Aplikasi Mobile Warga</a></li>
-                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">🔗 Integrasi Dukcapil & BPS</a></li>
-                <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">🔔 Notifikasi Otomatis</a></li>
                 <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">🏠 Manajemen Inventaris Aset Desa</a></li>
                 <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">📢 Layanan Pengaduan Masyarakat</a></li>
                 <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">🗓️ Manajemen Kegiatan & Program Desa</a></li>
