@@ -1,34 +1,79 @@
-{{-- resources/views/beranda.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda - Sistem Informasi Desa</title>
+
+    <title>@yield('title', 'Sistem Informasi Desa')</title>
+
+    {{-- Bootstrap CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- Google Font --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: #e8f5e9;
             font-family: 'Poppins', sans-serif;
         }
-        .navbar {
+
+        .app-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-content {
+            flex: 1 0 auto;
+        }
+
+        .app-footer {
+            flex-shrink: 0;
+            text-align: center;
+            background-color: #2e7d32;
+            color: #ffffff;
+            padding: 12px 10px;
+            font-size: 14px;
+        }
+
+        /* Navbar base style (dipakai oleh layouts.navbar) */
+        .navbar-main {
             background-color: #1b5e20 !important;
         }
-        .navbar-brand, .nav-link, .dropdown-toggle {
+
+        .navbar-main .navbar-brand,
+        .navbar-main .nav-link,
+        .navbar-main .dropdown-toggle {
             color: #fff !important;
             font-weight: 500;
         }
-        .dropdown-menu {
+
+        .navbar-main .dropdown-menu {
             background-color: #2e7d32;
             border: none;
         }
-        .dropdown-item {
+
+        .navbar-main .dropdown-item {
             color: #fff;
+            font-size: 14px;
         }
-        .dropdown-item:hover {
+
+        .navbar-main .dropdown-item:hover {
             background-color: #43a047;
             color: #fff;
         }
+
         .btn-green {
             background-color: #43a047;
             color: white;
@@ -37,10 +82,13 @@
             font-weight: 600;
             transition: 0.3s;
         }
+
         .btn-green:hover {
             background-color: #2e7d32;
             color: #fff;
         }
+
+        /* Hero section (dipakai kalau beranda butuh) */
         .hero {
             display: flex;
             align-items: center;
@@ -64,20 +112,11 @@
             width: 420px;
             height: auto;
         }
-        footer {
-            text-align: center;
-            background-color: #2e7d32;
-            color: white;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
                 text-align: center;
+                padding: 60px 20px;
             }
             .hero-text {
                 max-width: 100%;
@@ -86,90 +125,55 @@
                 margin-top: 30px;
             }
         }
+
+        /* Utility umum (card dan tombol utama) */
+        .card-custom {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border: none;
+        }
+
+        .btn-primary-rounded {
+            background: #1a7f5a;
+            border: none;
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-primary-rounded:hover {
+            background: #145c42;
+            color: #fff;
+        }
     </style>
+
+    @stack('styles')
 </head>
 <body>
+<div class="app-wrapper">
 
-{{-- Navbar --}}
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="{{ asset('images/logo-sidoarjo.png') }}" alt="Logo Sidoarjo" style="height: 50px; margin-right: 10px;">
-            <h2 class="mb-0 fs-4">APP DESA PINTAR</h2>
-        </a>
+    {{-- Navbar global --}}
+    @include('layouts.navbar')
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a href="{{ route('home') }}" class="nav-link">Beranda</a></li>
-
-               {{-- Dropdown Layanan Publik --}}
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Layanan Publik</a>
-    <ul class="dropdown-menu">
-
-        @auth
-            {{-- User sudah login --}}
-            <li>
-                <a class="dropdown-item" 
-                   href="{{ auth()->user()->role == 'warga' ? route('layanan.surat') : route('admin.surat') }}">
-                   Pelayanan Surat-Menyurat Digital
-                </a>
-            </li>
-        @else
-            {{-- Pengunjung belum login --}}
-            <li>
-                <a class="dropdown-item" href="{{ route('login') }}">
-                    Pelayanan Surat-Menyurat Digital
-                </a>
-            </li>
-        @endauth
-
-      <li>
-    <a class="dropdown-item" href="{{ route('layanan.inventaris') }}">
-        Manajemen Inventaris Aset Desa
-    </a>
-</li>
-
-        <li><a class="dropdown-item" href="#">Layanan Pengaduan Masyarakat</a></li>
-        <li><a class="dropdown-item" href="#">Manajemen Kegiatan & Program Desa</a></li>
-    </ul>
-</li>
-
-
-                @auth
-                <li class="nav-item">
-        <a  class="nav-link" href="{{ auth()->user()->role == 'admin' ? route('admin.dashboard') : route('dashboard') }}" style="color: white; margin-right: 15px; text-decoration: none;">Dashboard</a>
-    </li>
-        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit" style="background-color: #d31414; color: white; border: none; padding: 8px 15px; border-radius: 30px; font-weight: 600;">Logout</button>
-        </form>
-    @else
-        <a href="{{ route('login') }}" 
-           style="background-color: #1a91e0ff; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-right: 10px;">
-           Login
-        </a>
-        <a href="{{ route('register') }}" 
-           style="background-color: #1a91e0ff; color: white; padding: 8px 15px; border-radius: 30px; text-decoration: none; font-weight: 600;">
-           Register
-        </a>
-    @endauth
-            </ul>
-        </div>
-    </div>
-</nav>
-
+    {{-- Konten halaman --}}
+    <main class="app-content">
         @yield('content')
-        
-    {{-- Footer --}}
-<footer>
-    <p>&copy; {{ date('Y') }} Sistem Informasi Desa Bangah. Semua Hak Dilindungi.</p>
-</footer>
+    </main>
 
+    {{-- Footer global (tidak lagi fixed, tidak menutupi konten) --}}
+    <footer class="app-footer">
+        <p class="mb-0">&copy; {{ date('Y') }} Sistem Informasi Desa Bangah. Semua Hak Dilindungi.</p>
+    </footer>
+</div>
+
+{{-- Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+@stack('scripts')
 </body>
 </html>

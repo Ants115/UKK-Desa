@@ -12,7 +12,8 @@ class InventarisController extends Controller
      */
     public function index()
     {
-        $data = Inventaris::all();
+        $data = Inventaris::orderBy('nama_barang')->get();
+
         return view('inventaris.index', compact('data'));
     }
 
@@ -21,8 +22,19 @@ class InventarisController extends Controller
      */
     public function publicIndex()
     {
-        $data = Inventaris::all();
+        $data = Inventaris::orderBy('nama_barang')->get();
+
         return view('inventaris.public', compact('data'));
+    }
+
+    /**
+     * ADMIN — Halaman detail satu inventaris
+     */
+    public function show($id)
+    {
+        $item = Inventaris::findOrFail($id);
+
+        return view('inventaris.show', compact('item'));
     }
 
     /**
@@ -38,14 +50,16 @@ class InventarisController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_barang' => 'required',
-            'jumlah' => 'required|integer',
-            'kondisi' => 'required',
-            'lokasi' => 'required',
+        $validated = $request->validate([
+            'nama_barang' => 'required|string|max:255',
+            'kode_barang' => 'nullable|string|max:100|unique:inventaris,kode_barang',
+            'jumlah'      => 'required|integer|min:0',
+            'kondisi'     => 'required|in:Baik,Rusak Ringan,Rusak Berat',
+            'lokasi'      => 'required|string|max:255',
+            'keterangan'  => 'nullable|string',
         ]);
 
-        Inventaris::create($request->all());
+        Inventaris::create($validated);
 
         return redirect()
             ->route('inventaris.index')
@@ -58,6 +72,7 @@ class InventarisController extends Controller
     public function edit($id)
     {
         $item = Inventaris::findOrFail($id);
+
         return view('inventaris.edit', compact('item'));
     }
 
@@ -66,14 +81,18 @@ class InventarisController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_barang' => 'required',
-            'jumlah' => 'required|integer',
-            'kondisi' => 'required',
-            'lokasi' => 'required',
+        $item = Inventaris::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama_barang' => 'required|string|max:255',
+            'kode_barang' => 'nullable|string|max:100|unique:inventaris,kode_barang,' . $item->id,
+            'jumlah'      => 'required|integer|min:0',
+            'kondisi'     => 'required|in:Baik,Rusak Ringan,Rusak Berat',
+            'lokasi'      => 'required|string|max:255',
+            'keterangan'  => 'nullable|string',
         ]);
 
-        Inventaris::findOrFail($id)->update($request->all());
+        $item->update($validated);
 
         return redirect()
             ->route('inventaris.index')

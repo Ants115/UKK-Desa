@@ -1,81 +1,110 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #195c26;">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-main">
+    <div class="container-fluid">
 
-        <!-- LOGO -->
-        <a class="navbar-brand d-flex align-items-center text-white" href="{{ route('home') }}">
-            <img src="{{ asset('images/logo-sidoarjo.png') }}" width="45" class="me-2">
-            <strong>APP DESA PINTAR</strong>
+        {{-- LOGO & BRAND --}}
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+            <img src="{{ asset('images/logo-sidoarjo.png') }}" alt="Logo Sidoarjo" style="height: 45px; margin-right: 10px;">
+            <span class="fw-bold">APP DESA PINTAR</span>
         </a>
 
-        <!-- BUTTON TOGGLE MOBILE -->
-        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+        {{-- TOGGLER MOBILE --}}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+        {{-- MENU --}}
+        <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+            <ul class="navbar-nav align-items-lg-center">
 
-                <!-- BERANDA -->
+                {{-- BERANDA --}}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('home') }}">Beranda</a>
+                    <a class="nav-link" href="{{ route('home') }}">Beranda</a>
                 </li>
 
-                <!-- LAYANAN PUBLIK DROPDOWN -->
+                {{-- LAYANAN PUBLIK --}}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                       data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         Layanan Publik
                     </a>
-                    <ul class="dropdown-menu" style="background:#1f722f;">
+                    <ul class="dropdown-menu">
+
+                        {{-- Pelayanan Surat-Menyurat Digital --}}
+                        @auth
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ auth()->user()->role === 'warga' ? route('layanan.surat') : route('admin.surat') }}">
+                                    Pelayanan Surat-Menyurat Digital
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a class="dropdown-item" href="{{ route('login') }}">
+                                    Pelayanan Surat-Menyurat Digital
+                                </a>
+                            </li>
+                        @endauth
+
+                        {{-- Inventaris Aset Desa --}}
+                        @auth
+                            <li>
+                                <a class="dropdown-item" href="{{ route('layanan.inventaris') }}">
+                                    Manajemen Inventaris Aset Desa
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a class="dropdown-item" href="{{ route('login') }}">
+                                    Manajemen Inventaris Aset Desa
+                                </a>
+                            </li>
+                        @endauth
+
+                        <li><hr class="dropdown-divider"></li>
 
                         <li>
-                            <a class="dropdown-item text-white" href="{{ route('layanan.surat') }}">
-                                Pelayanan Surat-Menyurat Digital
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item text-white" href="#">
-                                Manajemen Inventaris Aset Desa
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item text-white" href="#">
+                            <a class="dropdown-item" href="#">
                                 Layanan Pengaduan Masyarakat
                             </a>
                         </li>
-
                         <li>
-                            <a class="dropdown-item text-white" href="#">
-                                Manajemen Kegiatan & Program Desa
+                            <a class="dropdown-item" href="#">
+                                Manajemen Kegiatan &amp; Program Desa
                             </a>
                         </li>
 
                     </ul>
                 </li>
 
-                <!-- LOGIN / REGISTER -->
-                @guest
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
-                    </li>
-
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-success" href="{{ route('register') }}">Register</a>
-                    </li>
-                @endguest
-
-                <!-- USER LOGGED IN -->
+                {{-- DASHBOARD / LOGIN / LOGOUT --}}
                 @auth
-                    <li class="nav-item ms-2">
-                        <form action="{{ route('logout') }}" method="POST">
+                    {{-- Link Dashboard sesuai role --}}
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link" href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    {{-- Tombol Logout --}}
+                    <li class="nav-item ms-lg-2">
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
                                 Logout
                             </button>
                         </form>
+                    </li>
+                @else
+                    {{-- Saat belum login --}}
+                    <li class="nav-item ms-lg-3">
+                        <a href="{{ route('login') }}" class="btn btn-primary btn-sm rounded-pill px-3 me-2">
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="btn btn-success btn-sm rounded-pill px-3">
+                            Register
+                        </a>
                     </li>
                 @endauth
 

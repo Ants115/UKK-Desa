@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inventaris extends Model
 {
+    protected $table = 'inventaris';
+
     protected $fillable = [
         'nama_barang',
         'kode_barang',
         'jumlah',
-        'kondisi',
+        'kondisi',      // Baik, Rusak Ringan, Rusak Berat
         'lokasi',
-        'keterangan'
+        'keterangan',
     ];
 }
